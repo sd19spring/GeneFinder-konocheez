@@ -2,7 +2,7 @@
 """
 YOUR HEADER COMMENT HERE
 
-@author: YOUR NAME HERE
+@author: Jerry
 
 """
 
@@ -31,7 +31,16 @@ def get_complement(nucleotide):
     'G'
     """
     # TODO: implement this
-    pass
+
+    if nucleotide == 'A':
+        return 'T'
+    if nucleotide == 'T':
+        return 'A'
+    if nucleotide == 'G':
+        return 'C'
+    if nucleotide == 'C':
+        return 'G'
+
 
 
 def get_reverse_complement(dna):
@@ -46,8 +55,20 @@ def get_reverse_complement(dna):
     'TGAACGCGG'
     """
     # TODO: implement this
-    pass
 
+    DNA = list(dna) #turns string into list
+    DNA_pair = [] #creates new list for pairs
+    for base_pair in DNA:
+        new_pair = get_complement(base_pair) #fills in new list with pairs
+        DNA_pair = DNA_pair + [new_pair]
+    for base_pair in DNA_pair:
+        n = (len(DNA_pair) - 1) #gets length of DNA_pair
+        if n > 0:
+            rev_DNA_pair = DNA_pair #creates new array for reverse DNA pairs
+            rev_DNA_pair[0] = DNA_pair[n] #assigns first list item in reverse to final list item in DNA_pairs
+            n = n - 1
+    delitmiter = ""
+    s = delimiter.join(rev_DNA_pair)
 
 def rest_of_ORF(dna):
     """ Takes a DNA sequence that is assumed to begin with a start
@@ -63,8 +84,17 @@ def rest_of_ORF(dna):
     'ATGAGA'
     """
     # TODO: implement this
-    pass
 
+    #SINCE IT ASS-U-MES IT BEGINS WITH START CODON,
+    #I WON'T CODE TO START AT START CODON
+
+    DNA = list(dna)
+    rev_DNA_pair = get_reverse_complement(DNA)
+    if rev_DNA_pair[i:i+3] == (('T', 'A', 'G')
+                or rev_DNA_pair[i:i+3] == ('T', 'G', 'A')
+                or rev_DNA_pair[i:i+3] == ('T', 'A', 'A')):
+
+                return rev_DNA_pair
 
 def find_all_ORFs_oneframe(dna):
     """ Finds all non-nested open reading frames in the given DNA
@@ -80,7 +110,16 @@ def find_all_ORFs_oneframe(dna):
     ['ATGCATGAATGTAGA', 'ATGTGCCC']
     """
     # TODO: implement this
-    pass
+    DNA = list(dna)
+    all_ORFs_oneframe = []
+
+
+    for i in range(len(DNA)):
+        if DNA[i:i+3] == ['A', 'T', 'G']: #if the i:i+3 sequence is ATG, print rest of ORF
+            all_ORFs_oneframe += 'A' + 'T' + 'G' + rest_of_ORF(DNA[i+4:])
+            i += len(rest_of_ORF(DNA[i+4:])) #skips to end of previous ORF
+        else:
+            i = i + 3 #if not, increment i and try again
 
 
 def find_all_ORFs(dna):
@@ -97,7 +136,14 @@ def find_all_ORFs(dna):
     ['ATGCATGAATGTAG', 'ATGAATGTAG', 'ATG']
     """
     # TODO: implement this
-    pass
+
+    DNA = list(dna)
+    cum_list_ORFs = [] #cumulative list of indices at different starting i's
+    for i in range(3):
+        d = find_all_ORFs_oneframe(dna[i:])
+        for x in d:
+            cum_list_ORFs += find_all_ORFs[i:]
+
 
 
 def find_all_ORFs_both_strands(dna):
@@ -162,5 +208,6 @@ def gene_finder(dna):
     pass
 
 if __name__ == "__main__":
+    #!/usr/bin/env python3
     import doctest
     doctest.testmod()
