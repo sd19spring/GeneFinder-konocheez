@@ -139,12 +139,11 @@ def find_all_ORFs(dna):
     """
     # TODO: implement this
 
-    DNA = list(dna)
-    cum_list_ORFs = [] #cumulative list of indices at different starting i's
+    find_all_ORFs_notfunction = [] #list of indices at different starting i's
     for i in range(3):
-        d = find_all_ORFs_oneframe(dna[i:])
-        for x in d:
-            cum_list_ORFs += find_all_ORFs[i:]
+        find_all_ORFs_notfunction.extend(find_all_ORFs_oneframe(dna[i:]))
+
+    return find_all_ORFs_notfunction
 
 
 
